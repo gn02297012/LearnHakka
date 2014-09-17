@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/site.css" rel="stylesheet">
         <script src="js/jquery.min.js"></script>
         <script src="js/jquery.hotkeys.js"></script>
         <script src="js/bootstrap.min.js"></script>
@@ -32,6 +33,7 @@
                     }
                 });
                 words = data;
+                $('#totalWordsCount').html(words.length);
                 randomPick();
                 //console.log(data); 
             });
@@ -39,90 +41,111 @@
             //隨機選字
             var randomPick = function() {
                 currIndex = Math.round(Math.random() * words.length);
+                $('#currIndex').html(currIndex);
                 showWord(words[currIndex]);
             };
 
             //將文字顯示到網頁中
             var showWord = function(word) {
-                $('#hakkeaWord').html(word['客家語言']);
-                $('#mandarinWord').html(word['華語辭義']);
-                $('#hakkaSentence').html(word['客語例句']);
-                $('#mandarinSentence').html(word['華語翻譯']);
-                var wordUrl = 'http://wiki.hakka.gov.tw/file/102/si/SI-' + word['categoryCode'] + '_' + word['序號'] + '.mp3';
-                $('#wordPlayer source').attr('src', wordUrl);
-                $('#wordPlayer').load();
-                var sentenceUrl = 'http://wiki.hakka.gov.tw/file/102/si/SI-' + word['categoryCode'] + '_' + word['序號'] + 's.mp3';
-                $('#sentencePlayer source').attr('src', sentenceUrl);
-                $('#sentencePlayer').load();
+                if (word) {
+                    $('#hakkeaWord').html(word['客家語言']);
+                    $('#hakkeaAlphabet').html(word['客語音標']);
+                    $('#mandarinWord').html(word['華語辭義']);
+                    $('#hakkaSentence').html(word['客語例句']);
+                    $('#mandarinSentence').html(word['華語翻譯']);
+                    var wordUrl = 'http://wiki.hakka.gov.tw/file/102/si/SI-' + word['categoryCode'] + '_' + word['序號'] + '.mp3';
+                    $('#wordPlayer source').attr('src', wordUrl);
+                    $('#wordPlayer').load();
+                    var sentenceUrl = 'http://wiki.hakka.gov.tw/file/102/si/SI-' + word['categoryCode'] + '_' + word['序號'] + 's.mp3';
+                    $('#sentencePlayer source').attr('src', sentenceUrl);
+                    $('#sentencePlayer').load();
+                }
+            };
+
+            var clickPrev = function() {
+                randomPick();
+            };
+
+            var clickNext = function() {
+                randomPick();
             };
 
             $(document).on('ready', function() {
-                $('#nextWord').on('click', randomPick);
+                $('#prevWord').on('click', clickPrev);
+                $('#nextWord').on('click', clickNext);
                 //設定按下鍵盤時的動作
-                $(document).on('keydown', null, 'right', randomPick);
-                $(document).on('keydown', null, 'down', randomPick);
+                $(document).on('keydown', null, 'up', clickPrev);
+                $(document).on('keydown', null, 'left', clickPrev);
+                $(document).on('keydown', null, 'right', clickNext);
+                $(document).on('keydown', null, 'down', clickNext);
             });
         </script>
     </head>
     <body>
         <div class="container">
-            <div class="header">
-                <ul class="nav nav-pills pull-right">
-                    <li class="active"><a href="#">Home</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Contact</a></li>
-                </ul>
-                <h3 class="text-muted">客語例句學習</h3>
-            </div>
-
             <div class="jumbotron">
                 <h1>客語例句學習</h1>
                 <p class="lead">提供給有客語基礎的人，藉由不斷地聽句子來學習客語。</p>
             </div>
 
-            <div class="row marketing">
+            <div class="row">
                 <div class="col-md-8 col-md-offset-2">
-                    <table class="table">
-                        <thead>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>客語</td>
-                                <td>
-                                    <p id="hakkeaWord"></p>
-                                    <audio id="wordPlayer" controls>
-                                        <source src="http://wiki.hakka.gov.tw/file/102/si/SI-01_009.mp3" type="audio/mpeg">
-                                    </audio>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>華語辭義</td>
-                                <td> <p id="mandarinWord"></p></td>
-                            </tr>
-                            <tr>
-                                <td>客語例句</td>
-                                <td>
-                                    <p id="hakkaSentence"></p>
-                                    <audio id="sentencePlayer" controls>
-                                        <source src="http://wiki.hakka.gov.tw/file/102/si/SI-01_009s.mp3" type="audio/mpeg">
-                                    </audio>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>華語翻譯</td>
-                                <td><p id="mandarinSentence"></p></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <button type="button" class="btn btn-primary" id="nextWord">隨機下一句</button>
+                    <div class="text-center"><span id="currIndex">0</span> / <span id="totalWordsCount">0</span></<div>                    
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 6em; min-width: 2em;"></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>客語</td>
+                                        <td>
+                                            <p id="hakkeaWord"></p>
+                                            <audio id="wordPlayer" controls>
+                                                <source src="http://wiki.hakka.gov.tw/file/102/si/SI-01_001.mp3" type="audio/mpeg">
+                                            </audio>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>客語音標</td>
+                                        <td> <p id="hakkeaAlphabet"></p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>華語辭義</td>
+                                        <td> <p id="mandarinWord"></p></td>
+                                    </tr>
+                                    <tr>
+                                        <td>客語例句</td>
+                                        <td>
+                                            <p id="hakkaSentence"></p>
+                                            <audio id="sentencePlayer" controls>
+                                                <source src="http://wiki.hakka.gov.tw/file/102/si/SI-01_001s.mp3" type="audio/mpeg">
+                                            </audio>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>華語翻譯</td>
+                                        <td><p id="mandarinSentence"></p></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-xs-6">
+                            <button type="button" class="btn btn-primary btn-lg btn-block" id="prevWord">上一句</button>
+                        </div>
+                        <div class="col-xs-6">
+                            <button type="button" class="btn btn-primary btn-lg btn-block" id="nextWord">下一句</button>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="footer">
-                <p>&copy; <a href="https://github.com/gn02297012" target="_blank">Jimmy Liao</a> 2014</p>
-            </div>
+                <div class="row">
+                    <p>&copy; <a href="https://github.com/gn02297012" target="_blank">Jimmy Liao</a> 2014</p>
+                </div>
 
-        </div> <!-- /container -->
+            </div> <!-- /container -->
 
     </body>
 </html>
