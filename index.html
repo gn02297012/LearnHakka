@@ -49,8 +49,9 @@
             var showWord = function(word) {
                 if (word) {
                     $('#hakkeaWord').html(word['客家語言']);
-                    $('#hakkeaAlphabet').html(word['客語音標']);
                     $('#mandarinWord').html(word['華語辭義']);
+                    $('#englishWord').html(word['英語詞義']);
+                    $('#hakkeaAlphabet').html(word['客語音標']);
                     $('#hakkaSentence').html(word['客語例句']);
                     $('#mandarinSentence').html(word['華語翻譯']);
                     var wordUrl = 'http://wiki.hakka.gov.tw/file/102/si/SI-' + word['categoryCode'] + '_' + word['序號'] + '.mp3';
@@ -100,34 +101,46 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>客語</td>
+                                        <td>詞義</td>
                                         <td>
-                                            <p id="hakkeaWord"></p>
+                                            <span class="">
+                                                <span class="label label-danger">客</span>
+                                                <span id="hakkeaWord"></span>
+                                            </span>
+                                            <span class="">
+                                                <span class="label label-success">華</span>
+                                                <span id="mandarinWord"></span>
+                                            </span>
+                                            <span class="">
+                                                <span class="label label-warning">英</span>
+                                                <span id="englishWord"></span>
+                                            </span>
+                                            <br /><br />
                                             <audio id="wordPlayer" controls>
                                                 <source src="http://wiki.hakka.gov.tw/file/102/si/SI-01_001.mp3" type="audio/mpeg">
                                             </audio>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>客語音標</td>
+                                        <td>音標</td>
                                         <td> <p id="hakkeaAlphabet"></p></td>
                                     </tr>
                                     <tr>
-                                        <td>華語辭義</td>
-                                        <td> <p id="mandarinWord"></p></td>
-                                    </tr>
-                                    <tr>
-                                        <td>客語例句</td>
+                                        <td>例句</td>
                                         <td>
-                                            <p id="hakkaSentence"></p>
+                                            <div class="sentence">
+                                                <span class="label label-danger">客</span>
+                                                <span id="hakkaSentence"></span>
+                                            </div>
+                                            <div class="sentence">
+                                                <span class="label label-success">華</span>
+                                                <span id="mandarinSentence"></span>
+                                            </div>
+                                            <br />
                                             <audio id="sentencePlayer" controls>
                                                 <source src="http://wiki.hakka.gov.tw/file/102/si/SI-01_001s.mp3" type="audio/mpeg">
                                             </audio>
                                         </td>
-                                    </tr>
-                                    <tr>
-                                        <td>華語翻譯</td>
-                                        <td><p id="mandarinSentence"></p></td>
                                     </tr>
                                 </tbody>
                             </table>
