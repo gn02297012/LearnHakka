@@ -23,6 +23,9 @@
 
             //目前顯示哪一個字的索引
             var currIndex = -1;
+            
+            //上下句的紀錄
+            var wordHistory = [];
 
             //從檔案讀取詞彙資料
             d3.tsv('si_words.tsv', function(error, data) {
@@ -38,15 +41,26 @@
                 //console.log(data); 
             });
 
-            //隨機選字
-            var randomPick = function() {
-                currIndex = Math.round(Math.random() * words.length);
-                $('#currIndex').html(currIndex);
-                showWord(words[currIndex]);
+            //隨機選句
+            function randomPick() {
+                //隨機產生句子索引
+                var index = Math.round(Math.random() * words.length);
+                //顯示句子
+                showWordByIndex(index);
             };
+            
+            //顯示指定索引的句子
+            function showWordByIndex(index) {
+                //將索引紀錄起來
+                currIndex = index;
+                //將索引顯示在網頁中
+                $('#currIndex').html(currIndex);
+                //下一題
+                showWord(words[currIndex]);
+            }
 
             //將文字顯示到網頁中
-            var showWord = function(word) {
+            function showWord(word) {
                 if (word) {
                     $('#hakkeaWord').html(word['客家語言']);
                     $('#mandarinWord').html(word['華語辭義']);
@@ -63,14 +77,25 @@
                 }
             };
 
-            var clickPrev = function() {
+            //按下"上一句"
+            function clickPrev() {
+                if (wordHistory.length) {
+                    var index = wordHistory.pop();
+                    showWordByIndex(index);
+                } else {
+                    console.log("沒有上一句");
+                }
+            };
+
+            //按下"下一句"
+            function clickNext() {
+                //將索引紀錄起來
+                wordHistory.push(currIndex);
+                //隨機下一句
                 randomPick();
             };
 
-            var clickNext = function() {
-                randomPick();
-            };
-
+            //初始化
             $(document).on('ready', function() {
                 $('#prevWord').on('click', clickPrev);
                 $('#nextWord').on('click', clickNext);
